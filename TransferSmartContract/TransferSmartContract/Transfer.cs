@@ -1,67 +1,64 @@
 ﻿using Stratis.SmartContracts;
 
-namespace TransferSmartContract
+public class Transfer : SmartContract
 {
-    public class Transfer : SmartContract
+    public Address Sender
     {
-        public Address Sender
+        get
         {
-            get
-            {
-                return PersistentState.GetAddress("Sender");
-            }
-            private set
-            {
-                PersistentState.SetAddress("Sender", value);
-            }
+            return PersistentState.GetAddress("Sender");
         }
+        private set
+        {
+            PersistentState.SetAddress("Sender", value);
+        }
+    }
 
-        public Address OwnerContract
+    public Address OwnerContract
+    {
+        get
         {
-            get
-            {
-                return PersistentState.GetAddress("OwnerContract");
-            }
-            private set
-            {
-                PersistentState.SetAddress("OwnerContract", value);
-            }
+            return PersistentState.GetAddress("OwnerContract");
         }
+        private set
+        {
+            PersistentState.SetAddress("OwnerContract", value);
+        }
+    }
 
-        public ulong Money
+    public ulong Money
+    {
+        get
         {
-            get
-            {
-                return PersistentState.GetUInt64("Money");
-            }
-            private set
-            {
-                PersistentState.SetUInt64("Money", value);
-            }
+            return PersistentState.GetUInt64("Money");
         }
+        private set
+        {
+            PersistentState.SetUInt64("Money", value);
+        }
+    }
 
-        public ISmartContractMapping<ulong> ReturnBalances
+    public ISmartContractMapping<ulong> ReturnBalances
+    {
+        get
         {
-            get
-            {
-                return PersistentState.GetUInt64Mapping("ReturnBalances");
-            }
+            return PersistentState.GetUInt64Mapping("ReturnBalances");
         }
+    }
 
-        public Transfer(ISmartContractState smartContractState)
-        : base(smartContractState)
-        {
-            OwnerContract = Message.Sender;
-        }
+    public Transfer(ISmartContractState smartContractState)
+    : base(smartContractState)
+    {
+        OwnerContract = Message.Sender;
+    }
 
-        public void TransferMoneyToContract()
+    public void TransferMoneyToContract()
+    {
+        if (Money > 0)
         {
-            if (Money > 0)
-            {
-                ReturnBalances[Sender] = Money;
-            }
-            Sender = Message.Sender;
-            Money += Message.Value;
+            ReturnBalances[Sender] = Money;
         }
+        Sender = Message.Sender;
+        Money += Message.Value;
     }
 }
