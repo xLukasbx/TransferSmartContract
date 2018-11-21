@@ -2,7 +2,7 @@
 
 namespace TransferSmartContract
 {
-    class Transfer : SmartContract
+    public class Transfer : SmartContract
     {
         public Address Sender
         {
@@ -54,7 +54,7 @@ namespace TransferSmartContract
             OwnerContract = Message.Sender;
         }
 
-        public void TransferCashToContract()
+        public void TransferMoneyToContract()
         {
             if (Money > 0)
             {

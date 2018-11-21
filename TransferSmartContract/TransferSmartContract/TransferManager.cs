@@ -2,7 +2,7 @@
 
 namespace TransferSmartContract
 {
-    class TransferManager : SmartContract
+    public class TransferManager : SmartContract
     {
         public TransferManager(ISmartContractState smartContractState) : base(smartContractState)
         {
