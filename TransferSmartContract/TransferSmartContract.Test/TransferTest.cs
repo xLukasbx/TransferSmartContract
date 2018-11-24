@@ -93,6 +93,11 @@ namespace TransferSmartContract.Test
 
             Assert.AreEqual(5uL, SmartContractState.PersistentState.GetUInt64("Money"));
 
+            ((TestMessage)SmartContractState.Message).Value = 7;
+
+            transfer.TransferMoneyToContract();
+
+            Assert.AreEqual(12uL, SmartContractState.PersistentState.GetUInt64("Money"));
         }
 
         [TestMethod]
