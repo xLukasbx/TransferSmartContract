@@ -101,7 +101,7 @@ namespace TransferSmartContract.Test
         }
 
         [TestMethod]
-        public void TestScenario_SellerReceiver_VerifyBalances()
+        public void TestScenario_ContractAddressSenderAddress_VerifyBalanaces()
         {
             var transfer = new Transfer(SmartContractState);
 
