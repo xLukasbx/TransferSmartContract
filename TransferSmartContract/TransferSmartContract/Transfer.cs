@@ -26,6 +26,18 @@ public class Transfer : SmartContract
         }
     }
 
+    public uint MinimalValue
+    {
+        get
+        {
+            return PersistentState.GetUInt32("MinimalValue");
+        }
+        private set
+        {
+            PersistentState.SetUInt32("MinimalValue", value);
+        }
+    }
+
     public ulong Money
     {
         get
@@ -46,14 +58,16 @@ public class Transfer : SmartContract
         }
     }
 
-    public Transfer(ISmartContractState smartContractState)
+    public Transfer(ISmartContractState smartContractState, uint minimalValue)
     : base(smartContractState)
     {
         OwnerContract = Message.Sender;
+        MinimalValue = minimalValue;
     }
 
     public void TransferMoneyToContract()
     {
+        Assert(Message.Value >= MinimalValue);
         if (Money > 0)
         {
             ReturnBalances[Sender] = Money;

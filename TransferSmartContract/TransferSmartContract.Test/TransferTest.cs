@@ -23,6 +23,7 @@ namespace TransferSmartContract.Test
 
         private const ulong ContractDeployBlockNumber = 1;
         private const ulong GasLimit = 10000;
+        private const uint MinimalValue = 5;
 
         private Dictionary<Address, ulong> BlockchainBalances;
 
@@ -63,47 +64,37 @@ namespace TransferSmartContract.Test
         }
 
         [TestMethod]
-        public void TestCreation()
-        {
-            var transferManager = new TransferManager(SmartContractState);
-
-            var createTransferAddress = transferManager.CreateNewTransfer();
-
-            Assert.IsNotNull(createTransferAddress);
-        }
-
-        [TestMethod]
         public void TestConstruction()
         {
-            var transfer = new Transfer(SmartContractState);
+            var transfer = new Transfer(SmartContractState, 5);
 
             Assert.AreEqual(ContractOwnerAddress, SmartContractState.PersistentState.GetAddress("OwnerContract"));
+            Assert.AreEqual(MinimalValue, SmartContractState.PersistentState.GetUInt32("MinimalValue"));
         }
 
         [TestMethod]
         public void TestTransfer()
         {
-            var transfer = new Transfer(SmartContractState);
+            var transfer = new Transfer(SmartContractState, 5);
 
             Assert.AreEqual(0uL, SmartContractState.PersistentState.GetUInt64("Money"));
 
             ((TestMessage)SmartContractState.Message).Value = 5;
-
             transfer.TransferMoneyToContract();
-
             Assert.AreEqual(5uL, SmartContractState.PersistentState.GetUInt64("Money"));
 
+            ((TestMessage)SmartContractState.Message).Value = 4;
+            Assert.ThrowsException<SmartContractAssertException>(() => transfer.TransferMoneyToContract());
+
             ((TestMessage)SmartContractState.Message).Value = 7;
-
             transfer.TransferMoneyToContract();
-
             Assert.AreEqual(12uL, SmartContractState.PersistentState.GetUInt64("Money"));
         }
 
         [TestMethod]
         public void TestScenario_ContractAddressSenderAddress_VerifyBalanaces()
         {
-            var transfer = new Transfer(SmartContractState);
+            var transfer = new Transfer(SmartContractState, 5);
 
             BlockchainBalances[ContractAddress] = 0;
             BlockchainBalances[SenderAddress] = 100;
