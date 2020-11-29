@@ -6,3 +6,5 @@ Smart contract takes funds with at least value which is declared as of construct
 
 # Components to run smart contract
 If you want deploy this smart contract on your computer locally, you have to download [Stratis Bitcoin Full Node](https://github.com/stratisproject/StratisBitcoinFullNode/tree/sc-alpha-latest) and [.Net Core framework](https://dotnet.microsoft.com/download/dotnet-core/2.1) and transfer smart contract of course
+
+# The repository was archived and won't be updated any more
